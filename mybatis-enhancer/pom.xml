@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.c2ray.idea.plugin</groupId>
+	<artifactId>mybatis-enhancer</artifactId>
+	<version>1.0-SNAPSHOT</version>
+
+
+	<dependencies>
+		<dependency>
+			<groupId>org.javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<version>3.29.2-GA</version>
+		</dependency>
+	</dependencies>
+
+
+	<properties>
+		<java.version>1.8</java.version>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.0.0</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+						</manifest>
+						<manifestEntries>
+							<Built-By>c2ray</Built-By>
+							<Premain-Class>com.c2ray.idea.plugin.core.Agent</Premain-Class>
+							<Agent-Class>com.c2ray.idea.plugin.core.Agent</Agent-Class>
+							<!--<Main-Class>com.c2ray.plugin.mybatislog.Agent</Main-Class>-->
+							<Can-Redefine-Classes>true</Can-Redefine-Classes>
+							<Can-Retransform-Classes>true</Can-Retransform-Classes>
+							<Can-Set-Native-Method-Prefix>true</Can-Set-Native-Method-Prefix>
+						</manifestEntries>
+					</archive>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<appendAssemblyId>false</appendAssemblyId>
+					<outputDirectory>../src/main/resources/libs</outputDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<configuration>
+							<finalName>mybatis-enhancer</finalName>
+						</configuration>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
