@@ -27,7 +27,7 @@ public class LogServer implements AutoCloseable {
 
     private static final int THREAD_POOL_SIZE = Runtime.getRuntime().availableProcessors();
 
-    public static final int MAX_TRY = 666;
+    private static final int MAX_TRY = 666;
 
     private AsynchronousServerSocketChannel serverChannel;
 

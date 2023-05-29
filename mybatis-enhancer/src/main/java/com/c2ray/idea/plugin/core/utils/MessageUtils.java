@@ -17,9 +17,9 @@ public class MessageUtils {
         MYBATIS_PRINTER = new MybatisMessager(ProjectConfig.getTargetPort());
     }
 
-    public static void sendProtocol(String sql) {
+    public static void sendMybatisProtocol(String protocolStr) {
         try {
-            MYBATIS_PRINTER.sendProtocol(sql);
+            MYBATIS_PRINTER.sendProtocol(protocolStr);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

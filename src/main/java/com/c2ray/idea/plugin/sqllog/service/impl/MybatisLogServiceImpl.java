@@ -17,6 +17,8 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
+ * 生命周期:                               <br/>
+ * init -> attach -> detach               <br/>
  * 这个类会在`MyBatisLogToolWindow`激活时加载
  *
  * @author c2ray
@@ -87,14 +89,20 @@ public final class MybatisLogServiceImpl implements PersistentStateComponent<Myb
                 ConsoleViewContentType.NORMAL_OUTPUT);
     }
 
+    public void attachPrint(String content) {
+        // 清空控制台
+        getConsoleView().clear();
+        getConsoleView().print(content + EOF,
+                ConsoleViewContentType.NORMAL_OUTPUT);
+    }
+
     @Override
     public void attachProcess(ProcessHandler processHandler) {
         setProcessHandler(processHandler);
         SqlLogServiceImpl sqlLogService = ApplicationManager.getApplication().getService(SqlLogServiceImpl.class);
-        String[] split = processHandler.toString().split(" ");
-        String appName = split[split.length - 1];
+        String appName = ProcessUtils.getAppName(processHandler);
         String content = String.format("Sql from %s will be printed.", appName);
-        printContent(content);
+        attachPrint(content);
     }
 
     @Override

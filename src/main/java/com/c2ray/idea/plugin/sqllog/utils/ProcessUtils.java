@@ -28,5 +28,15 @@ public class ProcessUtils {
         }
     }
 
-
+    public static String getAppName(ProcessHandler processHandler) {
+        String[] split = processHandler.toString().split(" ");
+        int i;
+        for (i = split.length - 1; i >= 0; i--) {
+            String s = split[i];
+            if (!s.contains("-")) {
+                break;
+            }
+        }
+        return split[i];
+    }
 }
