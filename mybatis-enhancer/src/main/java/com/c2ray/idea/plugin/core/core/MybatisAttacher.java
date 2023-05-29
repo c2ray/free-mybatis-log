@@ -23,9 +23,9 @@ public class MybatisAttacher implements Attacher {
             CtClass targetClass = classPool.get(getTargetClassName());
             CtMethod targetMethod = targetClass.getDeclaredMethod("prepareStatement");
                targetMethod.insertAfter(
-                    "String sql = $_.unwrap(java.sql.PreparedStatement.class).toString().split(\"[:|-]\")[1];\n" +
+                    "String sql = $_.unwrap(java.sql.PreparedStatement.class).toString().split(\"[:|-]\", 2)[1];\n" +
                             "sql = com.c2ray.idea.plugin.core.utils.StringUtils.removeExtraWhitespaces(sql);\n" +
-                            "com.c2ray.idea.plugin.core.utils.MessageUtils.sendProtocol(sql);" +
+                            "com.c2ray.idea.plugin.core.utils.MessageUtils.sendMybatisProtocol(sql);" +
                             "return $_;");
             return targetClass.toBytecode();
         } catch (NotFoundException | CannotCompileException | IOException e) {
