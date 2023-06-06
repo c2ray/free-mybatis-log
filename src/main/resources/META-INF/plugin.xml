@@ -27,7 +27,7 @@
 	<extensions defaultExtensionNs="com.intellij">
 		<!--<consoleInputFilterProvider implementation="com.plugins.mybaitslog.MyBatisLogInputFilterProvider"/>-->
 		<!--  <console.folding implementation="com.plugins.mybaitslog.console.ConsoleExceptionFolding"/>-->
-		<toolWindow id="Free MyBatis Log" secondary="true" icon="/icons/mybatis.png" anchor="bottom"
+		<toolWindow id="Free MyBatis Log" secondary="true" icon="/icons/mybatis_16.png" anchor="bottom"
 		            factoryClass="com.c2ray.idea.plugin.sqllog.MyBatisLogToolWindow"/>
 
 		<consoleActionsPostProcessor implementation="com.c2ray.idea.plugin.sqllog.SqlLogConsoleActionsPostProcessor"/>
@@ -46,7 +46,7 @@
 		<action id="MybatisAttachRecentProcessAction"
 		        class="com.c2ray.idea.plugin.sqllog.MybatisAttachRecentProcessAction" text="Run"
 		        description="Log last run java process"
-		        icon="/actions/execute.png"
+		        icon="/icons/mybatis_21.png"
 		/>
 	</actions>
 	<idea-version since-build="204" />
