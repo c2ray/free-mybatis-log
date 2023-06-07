@@ -1,4 +1,4 @@
-package com.c2ray.idea.plugin.core.config;
+package com.c2ray.idea.plugin.sqllog.config;
 
 import java.lang.management.ManagementFactory;
 

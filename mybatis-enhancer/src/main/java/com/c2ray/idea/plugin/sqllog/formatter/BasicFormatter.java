@@ -1,4 +1,4 @@
-package com.c2ray.idea.plugin.core.formatter;
+package com.c2ray.idea.plugin.sqllog.formatter;
 
 import java.util.*;
 

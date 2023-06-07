@@ -5,7 +5,7 @@
 
 	<!-- Public plugin name should be written in Title Case.
 		  Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
-	<name>free-mybatis-log</name>
+	<name>Free Mybatis Log</name>
 
 	<!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
 	<vendor email="null" url="https://www.github.com/c2ray">c2ray</vendor>
@@ -44,9 +44,9 @@
 
 	<actions>
 		<action id="MybatisAttachRecentProcessAction"
-		        class="com.c2ray.idea.plugin.sqllog.MybatisAttachRecentProcessAction" text="Run"
-		        description="Log last run java process"
-		        icon="/icons/mybatis_21.png"
+				class="com.c2ray.idea.plugin.sqllog.MybatisAttachRecentProcessAction" text="Run"
+				description="Log last run java process"
+				icon="/icons/mybatis_21.png"
 		/>
 	</actions>
 	<idea-version since-build="204" />

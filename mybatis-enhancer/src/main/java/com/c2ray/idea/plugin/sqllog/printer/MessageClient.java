@@ -1,4 +1,4 @@
-package com.c2ray.idea.plugin.core.printer;
+package com.c2ray.idea.plugin.sqllog.printer;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

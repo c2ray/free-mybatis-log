@@ -1,9 +1,9 @@
-package com.c2ray.idea.plugin.core.printer;
+package com.c2ray.idea.plugin.sqllog.printer;
 
 
-import com.c2ray.idea.plugin.core.formatter.BasicFormatter;
-import com.c2ray.idea.plugin.core.protocol.SqlLogProtocol;
-import com.c2ray.idea.plugin.core.utils.ProtocolUtils;
+import com.c2ray.idea.plugin.sqllog.formatter.BasicFormatter;
+import com.c2ray.idea.plugin.sqllog.protocol.SqlLogProtocol;
+import com.c2ray.idea.plugin.sqllog.utils.ProtocolUtils;
 
 import java.io.IOException;
 

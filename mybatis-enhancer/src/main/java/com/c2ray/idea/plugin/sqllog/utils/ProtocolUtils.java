@@ -1,7 +1,7 @@
-package com.c2ray.idea.plugin.core.utils;
+package com.c2ray.idea.plugin.sqllog.utils;
 
-import com.c2ray.idea.plugin.core.config.ProjectConfig;
-import com.c2ray.idea.plugin.core.protocol.SqlLogProtocol;
+import com.c2ray.idea.plugin.sqllog.config.ProjectConfig;
+import com.c2ray.idea.plugin.sqllog.protocol.SqlLogProtocol;
 
 /**
  * @author c2ray

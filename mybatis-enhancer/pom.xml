@@ -38,8 +38,8 @@
 						</manifest>
 						<manifestEntries>
 							<Built-By>c2ray</Built-By>
-							<Premain-Class>com.c2ray.idea.plugin.core.Agent</Premain-Class>
-							<Agent-Class>com.c2ray.idea.plugin.core.Agent</Agent-Class>
+							<Premain-Class>com.c2ray.idea.plugin.sqllog.Agent</Premain-Class>
+							<Agent-Class>com.c2ray.idea.plugin.sqllog.Agent</Agent-Class>
 							<!--<Main-Class>com.c2ray.plugin.mybatislog.Agent</Main-Class>-->
 							<Can-Redefine-Classes>true</Can-Redefine-Classes>
 							<Can-Retransform-Classes>true</Can-Retransform-Classes>
