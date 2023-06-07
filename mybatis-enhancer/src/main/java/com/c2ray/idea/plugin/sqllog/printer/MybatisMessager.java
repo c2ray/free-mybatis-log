@@ -1,4 +1,4 @@
-package com.c2ray.idea.plugin.core.printer;
+package com.c2ray.idea.plugin.sqllog.printer;
 
 /**
  * @author c2ray

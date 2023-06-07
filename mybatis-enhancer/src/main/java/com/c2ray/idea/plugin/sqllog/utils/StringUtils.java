@@ -1,4 +1,4 @@
-package com.c2ray.idea.plugin.core.utils;
+package com.c2ray.idea.plugin.sqllog.utils;
 
 import java.util.StringTokenizer;
 

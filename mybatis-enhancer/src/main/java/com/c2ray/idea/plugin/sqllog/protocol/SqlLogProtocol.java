@@ -1,4 +1,4 @@
-package com.c2ray.idea.plugin.core.protocol;
+package com.c2ray.idea.plugin.sqllog.protocol;
 
 /**
  * @author c2ray

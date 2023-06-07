@@ -1,7 +1,7 @@
-package com.c2ray.idea.plugin.core.utils;
+package com.c2ray.idea.plugin.sqllog.utils;
 
-import com.c2ray.idea.plugin.core.config.ProjectConfig;
-import com.c2ray.idea.plugin.core.printer.MybatisMessager;
+import com.c2ray.idea.plugin.sqllog.config.ProjectConfig;
+import com.c2ray.idea.plugin.sqllog.printer.MybatisMessager;
 
 import java.io.IOException;
 

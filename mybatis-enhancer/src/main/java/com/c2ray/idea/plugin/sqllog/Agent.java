@@ -1,12 +1,14 @@
-package com.c2ray.idea.plugin.core;
+package com.c2ray.idea.plugin.sqllog;
 
 
-import com.c2ray.idea.plugin.core.config.ProjectConfig;
-import com.c2ray.idea.plugin.core.core.AttacherFactory;
-import com.c2ray.idea.plugin.core.core.MybatisAttacher;
-import com.c2ray.idea.plugin.core.utils.MessageUtils;
+import com.c2ray.idea.plugin.sqllog.config.ProjectConfig;
+import com.c2ray.idea.plugin.sqllog.core.AttacherFactory;
+import com.c2ray.idea.plugin.sqllog.core.JDBC51Attacher;
+import com.c2ray.idea.plugin.sqllog.core.JDBC8Attacher;
+import com.c2ray.idea.plugin.sqllog.utils.MessageUtils;
 
 import java.lang.instrument.Instrumentation;
+import java.lang.instrument.UnmodifiableClassException;
 
 /**
  * @author c2ray
@@ -30,10 +32,22 @@ public class Agent {
     static void agentmain(String agentArgs) {
     }
 
+    /**
+     * -javaagent:mybatis-enhancer.jar=projectName:targetPort
+     *
+     * @param agentArgs
+     * @param inst
+     */
     private static void doAttach(String agentArgs, Instrumentation inst) {
         AttacherFactory attacherFactory = new AttacherFactory(inst);
-        attacherFactory.addAttacher(new MybatisAttacher());
-        attacherFactory.doAttach();
+        attacherFactory.addAttacher(new JDBC51Attacher())
+                .addAttacher(new JDBC8Attacher());
+
+        try {
+            attacherFactory.doAttach();
+        } catch (UnmodifiableClassException e) {
+            throw new RuntimeException(e);
+        }
 
         String[] args = agentArgs.split(":");
         String projectName = args[0];
