@@ -15,16 +15,19 @@ public abstract class AbsMessager {
     private final String frameworkName;
 
     private final MessageClient messageClient;
-
-    private static final BasicFormatter FORMATTER = new BasicFormatter();
-
+    
     public AbsMessager(String frameworkName, Integer port) {
         this.frameworkName = frameworkName;
         this.messageClient = new MessageClient(port);
     }
 
-    public void sendProtocol(String sql) throws IOException {
-        SqlLogProtocol protocol = ProtocolUtils.getProtocol(frameworkName, sql);
+
+    public void sendProtocol(Integer status) {
+        sendProtocol(status, null, null);
+    }
+
+    public void sendProtocol(Integer status, String methodName, String sql) {
+        SqlLogProtocol protocol = ProtocolUtils.getProtocol(frameworkName, status, methodName, sql);
         messageClient.send(protocol);
     }
 

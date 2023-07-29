@@ -7,11 +7,12 @@ import javassist.CtMethod;
 import java.security.ProtectionDomain;
 
 /**
- * 兼容JDBC 5.1版本
+ * 兼容JDBC 8以后的版本版本
  *
  * @author c2ray
  * @since 2023/6/6
  */
+@Deprecated
 public class JDBC8Attacher extends Attacher {
 
     @Override

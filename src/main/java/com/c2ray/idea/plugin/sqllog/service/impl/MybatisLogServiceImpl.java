@@ -83,13 +83,24 @@ public final class MybatisLogServiceImpl implements PersistentStateComponent<Myb
         return consolePanel;
     }
 
+
+    public void printPlainContent(String content) {
+        getConsoleView().print(content + "\n\n",
+                ConsoleViewContentType.NORMAL_OUTPUT);
+    }
+
+    public void printErrorContent(String content) {
+        getConsoleView().print(content + "\n\n",
+                ConsoleViewContentType.ERROR_OUTPUT);
+    }
+
     @Override
     public void printContent(String content) {
         getConsoleView().print(content + EOF,
                 ConsoleViewContentType.NORMAL_OUTPUT);
     }
 
-    public void attachPrint(String content) {
+    public void printOnAttach(String content) {
         // 清空控制台
         getConsoleView().clear();
         getConsoleView().print(content + EOF,
@@ -102,7 +113,7 @@ public final class MybatisLogServiceImpl implements PersistentStateComponent<Myb
         SqlLogServiceImpl sqlLogService = ApplicationManager.getApplication().getService(SqlLogServiceImpl.class);
         String appName = ProcessUtils.getAppName(processHandler);
         String content = String.format("Sql from %s will be printed.", appName);
-        attachPrint(content);
+        printOnAttach(content);
     }
 
     @Override

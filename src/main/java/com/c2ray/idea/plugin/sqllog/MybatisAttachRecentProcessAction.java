@@ -17,7 +17,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
+import static com.c2ray.idea.plugin.sqllog.constant.Message.NO_RUNNING_MYBATIS_PROJECT_MSG;
 import static com.c2ray.idea.plugin.sqllog.utils.PredictUtils.notFound;
 import static com.c2ray.idea.plugin.sqllog.utils.ProcessUtils.isJavaProcess;
 import static com.c2ray.idea.plugin.sqllog.utils.ProcessUtils.isRunning;
@@ -39,7 +41,7 @@ public class MybatisAttachRecentProcessAction extends DumbAwareAction {
 
         ProcessHandler javaProcess = getRecentRunningJavaProcess(project);
         if (notFound(javaProcess)) {
-            // todo 未找到运行的java应用提示用户自己选择应用
+            Objects.requireNonNull(project.getServiceIfCreated(MybatisLogServiceImpl.class)).printPlainContent(NO_RUNNING_MYBATIS_PROJECT_MSG);
             return;
         }
 

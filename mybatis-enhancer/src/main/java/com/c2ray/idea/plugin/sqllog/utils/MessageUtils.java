@@ -2,8 +2,7 @@ package com.c2ray.idea.plugin.sqllog.utils;
 
 import com.c2ray.idea.plugin.sqllog.config.ProjectConfig;
 import com.c2ray.idea.plugin.sqllog.printer.MybatisMessager;
-
-import java.io.IOException;
+import com.c2ray.idea.plugin.sqllog.protocol.SqlLogProtocolStatusEnum;
 
 /**
  * @author c2ray
@@ -17,12 +16,12 @@ public class MessageUtils {
         MYBATIS_PRINTER = new MybatisMessager(ProjectConfig.getTargetPort());
     }
 
-    public static void sendMybatisProtocol(String protocolStr) {
-        try {
-            MYBATIS_PRINTER.sendProtocol(protocolStr);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public static void sendMybatisProtocol(String methodName, String sql) {
+        MYBATIS_PRINTER.sendProtocol(SqlLogProtocolStatusEnum.CRUD.getCode(), methodName, sql);
+    }
+
+    public static void sendTerminate() {
+        MYBATIS_PRINTER.sendProtocol(SqlLogProtocolStatusEnum.TERMINATE.getCode());
     }
 
 }

@@ -1,4 +1,3 @@
-
 plugins {
     id("java")
     id("org.jetbrains.intellij") version "1.13.3"
@@ -18,6 +17,7 @@ repositories {
 // Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
     version.set("2022.2")
+//    version.set("2022.1.4")
 //    type.set("IC") // Target IDE Platform
     type.set("IU") // Target IDE Platform
 
@@ -26,6 +26,7 @@ intellij {
 
 dependencies {
     compileOnly(fileTree("resource/libs"))
+    implementation("com.google.code.gson:gson:2.10.1")
 }
 
 tasks {
