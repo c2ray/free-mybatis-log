@@ -1,8 +1,10 @@
 package com.c2ray.idea.plugin.sqllog;
 
 
+import com.c2ray.idea.plugin.sqllog.protocol.SqlLogProtocol;
 import com.c2ray.idea.plugin.sqllog.service.impl.SqlLogServiceImpl;
 import com.c2ray.idea.plugin.sqllog.utils.RandomUtil;
+import com.google.gson.Gson;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 
@@ -112,7 +114,8 @@ public class LogServer implements AutoCloseable {
             String str = charBuffer.toString();
 
             SqlLogServiceImpl sqlLogService = ApplicationManager.getApplication().getService(SqlLogServiceImpl.class);
-            sqlLogService.printProtocol(str);
+            SqlLogProtocol protocol = new Gson().fromJson(str, SqlLogProtocol.class);
+            sqlLogService.printProtocol(protocol);
 
             attachment.clear();
             client.read(attachment, attachment, this);

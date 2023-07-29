@@ -12,6 +12,7 @@ import java.security.ProtectionDomain;
  * @author c2ray
  * @since 2023/6/6
  */
+@Deprecated
 public class JDBC51Attacher extends Attacher {
 
     @Override

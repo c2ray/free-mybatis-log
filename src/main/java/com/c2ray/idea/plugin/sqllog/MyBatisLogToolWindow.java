@@ -6,6 +6,8 @@ import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.ActionToolbar;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
+import com.intellij.openapi.application.ApplicationInfo;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.openapi.wm.ToolWindow;
@@ -29,8 +31,8 @@ public class MyBatisLogToolWindow implements ToolWindowFactory {
         mybatisLogService.init(project);
         ConsoleView consoleView = mybatisLogService.getConsoleView();
         JPanel consolePanel = mybatisLogService.getConsolePanel();
-        ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
-
+        ContentFactory contentFactory = ApplicationManager.getApplication().getService(ContentFactory.class);
+         
         final DefaultActionGroup actionGroup = new DefaultActionGroup();
         AnAction mybatisAttachRecentProcessAction = ActionManager.getInstance()
                 .getAction("MybatisAttachRecentProcessAction");

@@ -9,8 +9,13 @@ import com.c2ray.idea.plugin.sqllog.protocol.SqlLogProtocol;
  */
 public class ProtocolUtils {
 
-    public static SqlLogProtocol getProtocol(String framework, String sql) {
-        return new SqlLogProtocol(framework, ProjectConfig.getPid(), sql);
+
+    public static SqlLogProtocol getProtocol(String framework, Integer status) {
+        return getProtocol(framework, status, null, null);
+    }
+
+    public static SqlLogProtocol getProtocol(String framework, Integer status, String methodName, String sql) {
+        return new SqlLogProtocol(framework, ProjectConfig.getPid(), status, methodName, sql);
     }
 
 }

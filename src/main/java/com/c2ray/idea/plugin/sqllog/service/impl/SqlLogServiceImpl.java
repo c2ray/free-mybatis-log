@@ -3,6 +3,7 @@ package com.c2ray.idea.plugin.sqllog.service.impl;
 import com.c2ray.idea.plugin.sqllog.LogServer;
 import com.c2ray.idea.plugin.sqllog.formatter.BasicFormatter;
 import com.c2ray.idea.plugin.sqllog.protocol.SqlLogProtocol;
+import com.c2ray.idea.plugin.sqllog.protocol.SqlLogProtocolStatusEnum;
 import com.c2ray.idea.plugin.sqllog.service.SqlLogService;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.components.*;
@@ -13,6 +14,8 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.c2ray.idea.plugin.sqllog.constant.Message.PROJECT_DOWN_MSG;
 
 /**
  * @author c2ray
@@ -55,12 +58,18 @@ public final class SqlLogServiceImpl implements PersistentStateComponent<SqlLogS
     }
 
     @Override
-    public void printProtocol(String protocol) {
-        SqlLogProtocol sqlLogProtocol = new SqlLogProtocol(protocol);
-        Integer pid = sqlLogProtocol.getPid();
-        String sql = sqlLogProtocol.getSql();
+    public void printProtocol(SqlLogProtocol protocol) {
+        Integer pid = protocol.getPid();
+        String sql = protocol.getSql();
+        Integer status = protocol.getStatus();
+        String methodName = protocol.getMethodName();
         MybatisLogServiceImpl mybatisLogService = PID_MYBATISLOGSERVICE_MAP.get(pid);
-        mybatisLogService.printContent(BASIC_FORMATTER.format(sqlLogProtocol.getSql()));
+        if (SqlLogProtocolStatusEnum.TERMINATE.getCode().equals(status)) {
+            mybatisLogService.printErrorContent(PROJECT_DOWN_MSG);
+        } else {
+            mybatisLogService.printPlainContent(methodName);
+            mybatisLogService.printContent(BASIC_FORMATTER.format(sql));
+        }
     }
 
 

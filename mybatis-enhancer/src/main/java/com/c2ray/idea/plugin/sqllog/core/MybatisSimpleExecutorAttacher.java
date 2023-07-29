@@ -7,8 +7,7 @@ import java.security.ProtectionDomain;
 /**
  * @author c2ray
  */
-@Deprecated
-public class MybatisAttacher extends Attacher {
+public class MybatisSimpleExecutorAttacher extends Attacher {
 
     @Override
     public String getTargetClassName() {
@@ -22,9 +21,10 @@ public class MybatisAttacher extends Attacher {
         CtClass targetClass = classPool.get(getTargetClassName());
         CtMethod targetMethod = targetClass.getDeclaredMethod("prepareStatement");
         targetMethod.insertAfter(
-                "String sql = $_.unwrap(java.sql.PreparedStatement.class).toString().split(\"[:|-]\", 2)[1];\n" +
+                "String methodName = com.c2ray.idea.plugin.sqllog.utils.ThreadLocalUtils.getMybatisSqlId();" +
+                        "String sql = $_.unwrap(java.sql.PreparedStatement.class).toString().split(\"[:|-]\", 2)[1];\n" +
                         "sql = com.c2ray.idea.plugin.sqllog.utils.StringUtils.removeExtraWhitespaces(sql);\n" +
-                        "com.c2ray.idea.plugin.sqllog.utils.MessageUtils.sendMybatisProtocol(sql);" +
+                        "com.c2ray.idea.plugin.sqllog.utils.MessageUtils.sendMybatisProtocol(methodName, sql);" +
                         "return $_;");
         return targetClass.toBytecode();
     }

@@ -3,8 +3,8 @@ package com.c2ray.idea.plugin.sqllog;
 
 import com.c2ray.idea.plugin.sqllog.config.ProjectConfig;
 import com.c2ray.idea.plugin.sqllog.core.AttacherFactory;
-import com.c2ray.idea.plugin.sqllog.core.JDBC51Attacher;
-import com.c2ray.idea.plugin.sqllog.core.JDBC8Attacher;
+import com.c2ray.idea.plugin.sqllog.core.MybatisMapperProxyAttacher;
+import com.c2ray.idea.plugin.sqllog.core.MybatisSimpleExecutorAttacher;
 import com.c2ray.idea.plugin.sqllog.utils.MessageUtils;
 
 import java.lang.instrument.Instrumentation;
@@ -40,8 +40,8 @@ public class Agent {
      */
     private static void doAttach(String agentArgs, Instrumentation inst) {
         AttacherFactory attacherFactory = new AttacherFactory(inst);
-        attacherFactory.addAttacher(new JDBC51Attacher())
-                .addAttacher(new JDBC8Attacher());
+        attacherFactory.addAttacher(new MybatisSimpleExecutorAttacher())
+                .addAttacher(new MybatisMapperProxyAttacher());
 
         try {
             attacherFactory.doAttach();
@@ -55,5 +55,10 @@ public class Agent {
 
         ProjectConfig.init(projectName, targetPort);
         MessageUtils.init();
+        addShutdownHook();
+    }
+
+    private static void addShutdownHook() {
+        Runtime.getRuntime().addShutdownHook(new Thread(MessageUtils::sendTerminate));
     }
 }

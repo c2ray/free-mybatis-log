@@ -12,37 +12,17 @@ public class SqlLogProtocol {
 
     private final String sql;
 
-    /**
-     * assemble protocol
-     *
-     * @param frameworkName
-     * @param pid
-     * @param sql
-     */
-    public SqlLogProtocol(String frameworkName, Integer pid, String sql) {
+    private final String methodName;
+
+    private final Integer status;
+
+
+    public SqlLogProtocol(String frameworkName, Integer pid, Integer status, String methodName, String sql) {
         this.frameworkName = frameworkName;
         this.pid = pid;
+        this.status = status;
+        this.methodName = methodName;
         this.sql = sql;
-    }
-
-    /**
-     * parse protocol to SqlLogProtocol
-     */
-    public SqlLogProtocol(String str) {
-        String[] splits = str.split(" ", 2);
-        String[] props = splits[0].split(":");
-        this.frameworkName = props[0];
-        this.pid = Integer.valueOf(props[1]);
-        this.sql = splits[1];
-    }
-
-    /**
-     * e.g: mybatis:1119 select * from user
-     *
-     * @return
-     */
-    public String getProtocol() {
-        return String.format("%s:%s %s", frameworkName, pid, sql);
     }
 
     public String getFrameworkName() {
@@ -57,9 +37,11 @@ public class SqlLogProtocol {
         return sql;
     }
 
-    @Override
-    public String toString() {
-        return getProtocol();
+    public String getMethodName() {
+        return methodName;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
 }

@@ -1,5 +1,7 @@
 package com.c2ray.idea.plugin.sqllog.printer;
 
+import com.google.gson.Gson;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -29,7 +31,7 @@ public class MessageClient {
     }
 
     public void send(Object obj) {
-        send(obj.toString());
+        send(new Gson().toJson(obj));
     }
 
 }

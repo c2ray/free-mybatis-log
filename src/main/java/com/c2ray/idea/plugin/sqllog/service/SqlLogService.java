@@ -1,5 +1,6 @@
 package com.c2ray.idea.plugin.sqllog.service;
 
+import com.c2ray.idea.plugin.sqllog.protocol.SqlLogProtocol;
 import com.intellij.openapi.project.Project;
 
 /**
@@ -11,5 +12,5 @@ public interface SqlLogService {
 
     void register(int process, Project project);
 
-    void printProtocol(String str);
+    void printProtocol(SqlLogProtocol sqlLogProtocol);
 }
