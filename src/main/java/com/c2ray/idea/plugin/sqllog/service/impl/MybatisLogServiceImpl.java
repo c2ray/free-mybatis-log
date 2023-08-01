@@ -1,15 +1,20 @@
 package com.c2ray.idea.plugin.sqllog.service.impl;
 
 import com.c2ray.idea.plugin.sqllog.service.MybatisLogService;
+import com.c2ray.idea.plugin.sqllog.utils.ActionUtils;
 import com.c2ray.idea.plugin.sqllog.utils.ProcessUtils;
 import com.intellij.execution.filters.TextConsoleBuilderFactory;
 import com.intellij.execution.process.ProcessHandler;
 import com.intellij.execution.ui.ConsoleView;
 import com.intellij.execution.ui.ConsoleViewContentType;
 import com.intellij.openapi.Disposable;
-import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.actionSystem.ActionToolbar;
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.components.*;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.openapi.util.Disposer;
 import org.jetbrains.annotations.NotNull;
 
@@ -37,6 +42,8 @@ public final class MybatisLogServiceImpl implements PersistentStateComponent<Myb
 
     private ProcessHandler processHandler;
 
+    private SimpleToolWindowPanel toolWindowPanel;
+
     private static final String EOF = "\n===========================================================================\n";
 
     public boolean isAttaching() {
@@ -49,6 +56,11 @@ public final class MybatisLogServiceImpl implements PersistentStateComponent<Myb
 
     public void setProcessHandler(ProcessHandler processHandler) {
         this.processHandler = processHandler;
+    }
+
+    @Override
+    public void detach() {
+        setProcessHandler(null);
     }
 
     /**
@@ -67,6 +79,19 @@ public final class MybatisLogServiceImpl implements PersistentStateComponent<Myb
         consolePanel.add(consoleView.getComponent(), BorderLayout.CENTER);
         this.consoleView = consoleView;
         this.consolePanel = consolePanel;
+        // action group
+        final DefaultActionGroup actionGroup = new DefaultActionGroup();
+        AnAction mybatisAttachRecentProcessAction = ActionUtils.getAction(ActionUtils.ActionEnum.MYBATIS_ATTACH_RECERNT_PROCESS_ACTION);
+        actionGroup.add(mybatisAttachRecentProcessAction);
+        actionGroup.addAll(consoleView.createConsoleActions());
+        // tool bar
+        ActionToolbar actionToolbar = ActionManager.getInstance().createActionToolbar("EventLog", actionGroup, false);
+        actionToolbar.setTargetComponent(consolePanel);
+        SimpleToolWindowPanel toolWindowPanel = new SimpleToolWindowPanel(false, true);
+        toolWindowPanel.setContent(consolePanel);
+        toolWindowPanel.setToolbar(actionToolbar.getComponent());
+        toolWindowPanel.setOpaque(true);
+        this.toolWindowPanel = toolWindowPanel;
     }
 
     @Override
@@ -82,7 +107,6 @@ public final class MybatisLogServiceImpl implements PersistentStateComponent<Myb
             throw new RuntimeException("MybatisLogService has not been initialized yet");
         return consolePanel;
     }
-
 
     public void printPlainContent(String content) {
         getConsoleView().print(content + "\n\n",
@@ -109,11 +133,15 @@ public final class MybatisLogServiceImpl implements PersistentStateComponent<Myb
 
     @Override
     public void attachProcess(ProcessHandler processHandler) {
-        setProcessHandler(processHandler);
-        SqlLogServiceImpl sqlLogService = ApplicationManager.getApplication().getService(SqlLogServiceImpl.class);
         String appName = ProcessUtils.getAppName(processHandler);
         String content = String.format("Sql from %s will be printed.", appName);
         printOnAttach(content);
+        this.processHandler = processHandler;
+    }
+
+    @Override
+    public SimpleToolWindowPanel getToolWindowPanel() {
+        return toolWindowPanel;
     }
 
     @Override

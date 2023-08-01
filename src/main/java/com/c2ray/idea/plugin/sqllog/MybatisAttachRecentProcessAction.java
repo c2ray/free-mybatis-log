@@ -3,6 +3,7 @@ package com.c2ray.idea.plugin.sqllog;
 import com.c2ray.idea.plugin.sqllog.service.impl.MybatisLogServiceImpl;
 import com.c2ray.idea.plugin.sqllog.service.impl.SqlLogServiceImpl;
 import com.c2ray.idea.plugin.sqllog.utils.EnhanceUtils;
+import com.c2ray.idea.plugin.sqllog.utils.IconUtils;
 import com.intellij.execution.ExecutionManager;
 import com.intellij.execution.process.KillableProcessHandler;
 import com.intellij.execution.process.ProcessHandler;
@@ -12,6 +13,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.DumbAwareAction;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.ReflectionUtil;
+import com.sun.tools.attach.VirtualMachine;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -19,7 +21,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import static com.c2ray.idea.plugin.sqllog.constant.Message.CONSOLE_DOWN_MSG;
 import static com.c2ray.idea.plugin.sqllog.constant.Message.NO_RUNNING_MYBATIS_PROJECT_MSG;
+import static com.c2ray.idea.plugin.sqllog.utils.IconUtils.IconEnum.MYBATIS;
+import static com.c2ray.idea.plugin.sqllog.utils.IconUtils.IconEnum.STOP;
 import static com.c2ray.idea.plugin.sqllog.utils.PredictUtils.notFound;
 import static com.c2ray.idea.plugin.sqllog.utils.ProcessUtils.isJavaProcess;
 import static com.c2ray.idea.plugin.sqllog.utils.ProcessUtils.isRunning;
@@ -50,23 +55,26 @@ public class MybatisAttachRecentProcessAction extends DumbAwareAction {
             sqlLogService.init();
         }
 
-        doAttachMybatisEnhancer(sqlLogService, project, javaProcess);
+        doAttachMybatisEnhancer(sqlLogService, project, javaProcess, e);
     }
 
     private void doAttachMybatisEnhancer(SqlLogServiceImpl sqlLogService, Project project,
-                                         ProcessHandler processHandler) {
+                                         ProcessHandler processHandler, AnActionEvent e) {
         int pid = getPid(processHandler);
         Integer serverPort = sqlLogService.getState().getServerPort();
         String projectName = project.getName();
         MybatisLogServiceImpl mybatisLogService = project.getServiceIfCreated(MybatisLogServiceImpl.class);
         assert mybatisLogService != null;
-        if ( mybatisLogService.isAttaching()) {
-            // todo 当前已绑定项目..., 是否切换其他项目
+
+        if (sqlLogService.isAttaching(pid)) {
+            mybatisLogService.printErrorContent(CONSOLE_DOWN_MSG);
+            sqlLogService.detach(pid);
+            mybatisLogService.detach();
             return;
         }
 
-        sqlLogService.register(pid, project);
-        EnhanceUtils.attachMybatisEnhancer(pid, serverPort, projectName);
+        VirtualMachine vm = EnhanceUtils.attachMybatisEnhancer(pid, serverPort, projectName);
+        sqlLogService.register(pid, project, vm);
         mybatisLogService.attachProcess(processHandler);
         log.info("mybatis-enhancer attached to pid: " + pid);
     }
@@ -83,4 +91,17 @@ public class MybatisAttachRecentProcessAction extends DumbAwareAction {
         Process myProcess = ReflectionUtil.getField(KillableProcessHandler.class, processHandler, Process.class, "myProcess");
         return (int) myProcess.toHandle().pid();
     }
+
+    @Override
+    public void update(@NotNull AnActionEvent e) {
+        Project project = e.getProject();
+        assert project != null;
+        MybatisLogServiceImpl mybatisLogService = project.getService(MybatisLogServiceImpl.class);
+        if (mybatisLogService.isAttaching()) {
+            e.getPresentation().setIcon(IconUtils.getIcon(STOP));
+        } else {
+            e.getPresentation().setIcon(IconUtils.getIcon(MYBATIS));
+        }
+    }
+
 }

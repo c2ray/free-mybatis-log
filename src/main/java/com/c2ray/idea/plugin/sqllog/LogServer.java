@@ -3,7 +3,7 @@ package com.c2ray.idea.plugin.sqllog;
 
 import com.c2ray.idea.plugin.sqllog.protocol.SqlLogProtocol;
 import com.c2ray.idea.plugin.sqllog.service.impl.SqlLogServiceImpl;
-import com.c2ray.idea.plugin.sqllog.utils.RandomUtil;
+import com.c2ray.idea.plugin.sqllog.utils.RandomUtils;
 import com.google.gson.Gson;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
@@ -54,7 +54,7 @@ public class LogServer implements AutoCloseable {
         int port;
         while (times < MAX_TRY) {
             try {
-                port = RandomUtil.randomPort();
+                port = RandomUtils.randomPort();
                 serverChannel.bind(new InetSocketAddress(port));
                 this.serverChannel = serverChannel;
                 this.channelGroup = group;
@@ -115,7 +115,7 @@ public class LogServer implements AutoCloseable {
 
             SqlLogServiceImpl sqlLogService = ApplicationManager.getApplication().getService(SqlLogServiceImpl.class);
             SqlLogProtocol protocol = new Gson().fromJson(str, SqlLogProtocol.class);
-            sqlLogService.printProtocol(protocol);
+            sqlLogService.dealProtocol(protocol);
 
             attachment.clear();
             client.read(attachment, attachment, this);

@@ -15,6 +15,8 @@ import java.lang.instrument.UnmodifiableClassException;
  */
 public class Agent {
 
+    private static Thread SHUTDOWN_HOOK = null;
+
     static void premain(String agentArgs, Instrumentation inst) {
         doAttach(agentArgs, inst);
     }
@@ -59,6 +61,9 @@ public class Agent {
     }
 
     private static void addShutdownHook() {
-        Runtime.getRuntime().addShutdownHook(new Thread(MessageUtils::sendTerminate));
+        if (SHUTDOWN_HOOK == null) {
+            SHUTDOWN_HOOK = new Thread(MessageUtils::sendTerminate);
+            Runtime.getRuntime().addShutdownHook(SHUTDOWN_HOOK);
+        }
     }
 }

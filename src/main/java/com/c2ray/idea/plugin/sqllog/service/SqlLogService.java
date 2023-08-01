@@ -10,7 +10,11 @@ import com.intellij.openapi.project.Project;
 public interface SqlLogService {
     void init();
 
-    void register(int process, Project project);
+    void register(int pid, Project project, com.sun.tools.attach.VirtualMachine vm);
 
-    void printProtocol(SqlLogProtocol sqlLogProtocol);
+    void detach(int pid);
+
+    boolean isAttaching(int pid);
+
+    void dealProtocol(SqlLogProtocol sqlLogProtocol);
 }

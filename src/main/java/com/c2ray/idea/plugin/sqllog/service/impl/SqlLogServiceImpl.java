@@ -6,9 +6,11 @@ import com.c2ray.idea.plugin.sqllog.protocol.SqlLogProtocol;
 import com.c2ray.idea.plugin.sqllog.protocol.SqlLogProtocolStatusEnum;
 import com.c2ray.idea.plugin.sqllog.service.SqlLogService;
 import com.intellij.openapi.Disposable;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.xmlb.annotations.Transient;
+import com.sun.tools.attach.VirtualMachine;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -32,6 +34,8 @@ public final class SqlLogServiceImpl implements PersistentStateComponent<SqlLogS
 
     private final Map<Integer, MybatisLogServiceImpl> PID_MYBATISLOGSERVICE_MAP = new HashMap<>();
 
+    private final Map<Integer, VirtualMachine> PID_VM_MAP = new HashMap<>();
+
     private static final BasicFormatter BASIC_FORMATTER = new BasicFormatter();
 
     private void launchLogServer() {
@@ -53,19 +57,45 @@ public final class SqlLogServiceImpl implements PersistentStateComponent<SqlLogS
     }
 
     @Override
-    public void register(int pid, Project project) {
+    public void register(int pid, Project project, VirtualMachine vm) {
         PID_MYBATISLOGSERVICE_MAP.put(pid, project.getService(MybatisLogServiceImpl.class));
+        PID_VM_MAP.put(pid, vm);
     }
 
     @Override
-    public void printProtocol(SqlLogProtocol protocol) {
+    public void detach(int pid) {
+        VirtualMachine vm = PID_VM_MAP.get(pid);
+        assert vm != null;
+        try {
+            vm.detach();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        PID_MYBATISLOGSERVICE_MAP.remove(pid);
+        PID_VM_MAP.remove(pid);
+    }
+
+    @Override
+    public boolean isAttaching(int pid) {
+        return PID_MYBATISLOGSERVICE_MAP.containsKey(pid);
+    }
+
+    @Override
+    public void dealProtocol(SqlLogProtocol protocol) {
         Integer pid = protocol.getPid();
         String sql = protocol.getSql();
         Integer status = protocol.getStatus();
         String methodName = protocol.getMethodName();
         MybatisLogServiceImpl mybatisLogService = PID_MYBATISLOGSERVICE_MAP.get(pid);
+        SqlLogServiceImpl sqlLogService = ApplicationManager.getApplication().getService(SqlLogServiceImpl.class);
+
+        if (mybatisLogService == null)
+            return;
+
         if (SqlLogProtocolStatusEnum.TERMINATE.getCode().equals(status)) {
             mybatisLogService.printErrorContent(PROJECT_DOWN_MSG);
+            sqlLogService.detach(pid);
+            mybatisLogService.detach();
         } else {
             mybatisLogService.printPlainContent(methodName);
             mybatisLogService.printContent(BASIC_FORMATTER.format(sql));

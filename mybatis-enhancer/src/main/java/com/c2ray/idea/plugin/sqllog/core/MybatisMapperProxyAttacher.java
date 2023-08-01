@@ -1,6 +1,5 @@
 package com.c2ray.idea.plugin.sqllog.core;
 
-import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMethod;
 
@@ -19,8 +18,7 @@ public class MybatisMapperProxyAttacher extends Attacher {
     @Override
     protected byte[] doTransform(ClassLoader loader, String className, Class<?> classBeingRedefined,
                               ProtectionDomain protectionDomain, byte[] classfileBuffer) throws Exception {
-        ClassPool classPool = ClassPool.getDefault();
-        CtClass targetClass = classPool.get(getTargetClassName());
+        CtClass targetClass = getTargetClass();
         CtMethod targetMethod = targetClass.getDeclaredMethod("invoke");
         targetMethod.insertBefore("com.c2ray.idea.plugin.sqllog.utils.ThreadLocalUtils.setMybatisSqlId(com.c2ray.idea.plugin.sqllog.utils.ReflecUtils.getMethodStr($2));");
         return targetClass.toBytecode();

@@ -17,8 +17,7 @@ public class MybatisSimpleExecutorAttacher extends Attacher {
     @Override
     protected byte[] doTransform(ClassLoader loader, String className, Class<?> classBeingRedefined,
                               ProtectionDomain protectionDomain, byte[] classfileBuffer) throws Exception {
-        ClassPool classPool = ClassPool.getDefault();
-        CtClass targetClass = classPool.get(getTargetClassName());
+        CtClass targetClass = getTargetClass();
         CtMethod targetMethod = targetClass.getDeclaredMethod("prepareStatement");
         targetMethod.insertAfter(
                 "String methodName = com.c2ray.idea.plugin.sqllog.utils.ThreadLocalUtils.getMybatisSqlId();" +

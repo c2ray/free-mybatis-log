@@ -1,5 +1,9 @@
 package com.c2ray.idea.plugin.sqllog.core;
 
+import javassist.ClassPool;
+import javassist.CtClass;
+import javassist.NotFoundException;
+
 import java.lang.instrument.ClassFileTransformer;
 import java.security.ProtectionDomain;
 
@@ -13,6 +17,15 @@ public abstract class Attacher implements ClassFileTransformer {
      * dependencies conveniently.
      */
     abstract String getTargetClassName();
+
+    protected CtClass getTargetClass() throws NotFoundException {
+        ClassPool classPool = ClassPool.getDefault();
+        CtClass targetClass = classPool.get(getTargetClassName());
+        if (targetClass.isFrozen()) {
+            targetClass.defrost();
+        }
+        return targetClass;
+    }
 
     protected abstract byte[] doTransform(ClassLoader loader, String className, Class<?> classBeingRedefined,
                                           ProtectionDomain protectionDomain, byte[] classfileBuffer) throws Exception;
