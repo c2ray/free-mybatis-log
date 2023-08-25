@@ -14,9 +14,12 @@
 		  Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
 		  Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
 	<description><![CDATA[
-	 零配置的 idea mybatis 日志捕获输出插件, 无需配置日志文件也可输出项目中mybatis的日志, 后续考虑添加jpa的支持.
-	 点击窗口中的运行按钮即可自动输出当前启动项目的sql日志.
-    free sql log plugin for Intellij Idea.
+	 <p> No config mybatis log plugin for Intellij Idea which can catch and print mybatis log automaticly from current project. </p>
+	 <p>USAGE: </p>
+	 <p> Click `Run` button in tool window to print log of current running project.</p>
+	 <p>零配置的 idea mybatis 日志捕获输出插件, 无需配置日志文件也可输出项目中mybatis的日志.</p>
+	 <p>说明: </p>
+	 <p>点击窗口中的运行按钮即可自动输出当前启动项目的sql日志.</p>
   ]]></description>
 
 	<!-- Product and plugin compatibility requirements.
