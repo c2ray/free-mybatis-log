@@ -20,7 +20,7 @@ public class MybatisMapperProxyAttacher extends Attacher {
                               ProtectionDomain protectionDomain, byte[] classfileBuffer) throws Exception {
         CtClass targetClass = getTargetClass();
         CtMethod targetMethod = targetClass.getDeclaredMethod("invoke");
-        targetMethod.insertBefore("com.c2ray.idea.plugin.sqllog.utils.ThreadLocalUtils.setMybatisSqlId(com.c2ray.idea.plugin.sqllog.utils.ReflecUtils.getMethodStr($2));");
+        targetMethod.insertBefore("if (!$2.getDeclaringClass().equals(java.lang.Object.class)) {com.c2ray.idea.plugin.sqllog.utils.ThreadLocalUtils.setMybatisSqlId(com.c2ray.idea.plugin.sqllog.utils.ReflectUtils.getMethodStr($2));}");
         return targetClass.toBytecode();
     }
 

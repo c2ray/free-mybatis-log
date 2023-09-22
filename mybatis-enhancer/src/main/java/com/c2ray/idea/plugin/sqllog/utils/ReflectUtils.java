@@ -3,16 +3,13 @@ package com.c2ray.idea.plugin.sqllog.utils;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.Arrays;
-import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
  * @author c2ray
  * @since 2023/7/27
  */
-public class ReflecUtils {
+public class ReflectUtils {
 
     private static final String TYPE_EXPRESSION = "[a-z0-9.]*(?=\\.\\w+)";
 
@@ -21,7 +18,7 @@ public class ReflecUtils {
         String clzName = method.getDeclaringClass().getName();
         String methodName = method.getName();
         String params = Arrays.stream(method.getGenericParameterTypes())
-                .map(Type::getTypeName).map(ReflecUtils::simplifyTypeName)
+                .map(Type::getTypeName).map(ReflectUtils::simplifyTypeName)
                 .collect(Collectors.joining(", "));
         return String.format("%s#%s(%s)", clzName, methodName, params);
     }
