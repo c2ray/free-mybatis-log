@@ -4,6 +4,7 @@ package com.c2ray.idea.plugin.sqllog;
 import com.c2ray.idea.plugin.sqllog.config.ProjectConfig;
 import com.c2ray.idea.plugin.sqllog.core.AttacherFactory;
 import com.c2ray.idea.plugin.sqllog.core.MybatisMapperProxyAttacher;
+import com.c2ray.idea.plugin.sqllog.core.MybatisPlusMapperProxyAttacher;
 import com.c2ray.idea.plugin.sqllog.core.MybatisSimpleExecutorAttacher;
 import com.c2ray.idea.plugin.sqllog.utils.MessageUtils;
 
@@ -43,8 +44,8 @@ public class Agent {
     private static void doAttach(String agentArgs, Instrumentation inst) {
         AttacherFactory attacherFactory = new AttacherFactory(inst);
         attacherFactory.addAttacher(new MybatisSimpleExecutorAttacher())
-                .addAttacher(new MybatisMapperProxyAttacher());
-
+                .addAttacher(new MybatisMapperProxyAttacher())
+                .addAttacher(new MybatisPlusMapperProxyAttacher());
         try {
             attacherFactory.doAttach();
         } catch (UnmodifiableClassException e) {

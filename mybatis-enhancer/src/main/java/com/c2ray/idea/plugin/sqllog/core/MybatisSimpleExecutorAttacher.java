@@ -20,7 +20,8 @@ public class MybatisSimpleExecutorAttacher extends Attacher {
         CtClass targetClass = getTargetClass();
         CtMethod targetMethod = targetClass.getDeclaredMethod("prepareStatement");
         targetMethod.insertAfter(
-                "String methodName = com.c2ray.idea.plugin.sqllog.utils.ThreadLocalUtils.getMybatisSqlId();" +
+//                "System.out.println(com.c2ray.idea.plugin.sqllog.utils.ThreadLocalUtils.getMybatisPlusSqlId());"+
+                "String methodName = java.util.Optional.ofNullable(com.c2ray.idea.plugin.sqllog.utils.ThreadLocalUtils.getMybatisSqlId()).orElse(com.c2ray.idea.plugin.sqllog.utils.ThreadLocalUtils.getMybatisPlusSqlId());" +
                         "String sql = $_.unwrap(java.sql.PreparedStatement.class).toString().split(\"[:|-]\", 2)[1];\n" +
                         "sql = com.c2ray.idea.plugin.sqllog.utils.StringUtils.removeExtraWhitespaces(sql);\n" +
                         "com.c2ray.idea.plugin.sqllog.utils.MessageUtils.sendMybatisProtocol(methodName, sql);" +

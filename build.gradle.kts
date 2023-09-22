@@ -1,10 +1,13 @@
+import org.gradle.internal.impldep.org.bouncycastle.cms.RecipientId.password
+import org.gradle.internal.impldep.org.eclipse.jgit.lib.ObjectChecker.type
+
 plugins {
     id("java")
     id("org.jetbrains.intellij") version "1.13.3"
 }
 
 group = "com.c2ray.idea.plugin"
-version = "1.0-SNAPSHOT"
+version = "1.0.2"
 
 repositories {
     maven {
