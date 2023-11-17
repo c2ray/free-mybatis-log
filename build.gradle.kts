@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "com.c2ray.idea.plugin"
-version = "1.0.2"
+version = "1.0.3"
 
 repositories {
     maven {

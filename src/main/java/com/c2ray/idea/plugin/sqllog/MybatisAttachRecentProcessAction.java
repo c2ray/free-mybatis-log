@@ -74,9 +74,11 @@ public class MybatisAttachRecentProcessAction extends DumbAwareAction {
         }
 
         VirtualMachine vm = EnhanceUtils.attachMybatisEnhancer(pid, serverPort, projectName);
-        sqlLogService.register(pid, project, vm);
-        mybatisLogService.attachProcess(processHandler);
-        log.info("mybatis-enhancer attached to pid: " + pid);
+        if (vm != null) {
+            sqlLogService.register(pid, project, vm);
+            mybatisLogService.attachProcess(processHandler);
+            log.info("mybatis-enhancer attached to pid: " + pid);
+        }
     }
 
     private ProcessHandler getRecentRunningJavaProcess(Project project) {
