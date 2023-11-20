@@ -1,19 +1,19 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-	<!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
-	<id>com.c2ray.idea.plugin.sqllog</id>
+    <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
+    <id>com.c2ray.idea.plugin.sqllog</id>
 
-	<!-- Public plugin name should be written in Title Case.
-		  Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
-	<name>Free Mybatis Log</name>
+    <!-- Public plugin name should be written in Title Case.
+          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
+    <name>Free Mybatis Log</name>
 
-	<!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
-	<vendor email="null" url="https://www.github.com/c2ray">c2ray</vendor>
+    <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
+    <vendor email="null" url="https://www.github.com/c2ray">c2ray</vendor>
 
-	<!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
-		  Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
-		  Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
-	<description><![CDATA[
+    <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
+          Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
+          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
+    <description><![CDATA[
 	 <p> No config mybatis log plugin for Intellij Idea which can catch and print mybatis log automaticly from current project. </p>
 	 <p>USAGE: </p>
 	 <p> Click `Run` button in tool window to print log of current running project.</p>
@@ -22,36 +22,40 @@
 	 <p>点击窗口中的运行按钮即可自动输出当前启动项目的sql日志.</p>
   ]]></description>
 
-	<!-- Product and plugin compatibility requirements.
-		  Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
-	<depends>com.intellij.modules.platform</depends>
+    <!-- Product and plugin compatibility requirements.
+          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+    <depends>com.intellij.modules.platform</depends>
 
-	<!-- Extension points defined by the plugin.
-		  Read more: https://plugi ns.jetbrains.com/docs/intellij/plugin-extension-points.html -->
-	<extensions defaultExtensionNs="com.intellij">
-		<!--<consoleInputFilterProvider implementation="com.plugins.mybaitslog.MyBatisLogInputFilterProvider"/>-->
-		<!--  <console.folding implementation="com.plugins.mybaitslog.console.ConsoleExceptionFolding"/>-->
-		<toolWindow id="Free MyBatis Log" secondary="true" icon="/icons/mybatis_16.png" anchor="bottom"
-		            factoryClass="com.c2ray.idea.plugin.sqllog.MyBatisLogToolWindow"/>
+    <!-- Extension points defined by the plugin.
+          Read more: https://plugi ns.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+    <extensions defaultExtensionNs="com.intellij">
+        <!--<consoleInputFilterProvider implementation="com.plugins.mybaitslog.MyBatisLogInputFilterProvider"/>-->
+        <!--  <console.folding implementation="com.plugins.mybaitslog.console.ConsoleExceptionFolding"/>-->
+        <toolWindow id="Free MyBatis Log" secondary="true" icon="/icons/mybatis_16.png" anchor="bottom"
+                    factoryClass="com.c2ray.idea.plugin.sqllog.MyBatisLogToolWindow"/>
 
-		<consoleActionsPostProcessor implementation="com.c2ray.idea.plugin.sqllog.SqlLogConsoleActionsPostProcessor"/>
+        <consoleActionsPostProcessor implementation="com.c2ray.idea.plugin.sqllog.SqlLogConsoleActionsPostProcessor"/>
 
-		<projectService serviceInterface="com.c2ray.idea.plugin.sqllog.service.MybatisLogService"
-		                serviceImplementation="com.c2ray.idea.plugin.sqllog.service.impl.MybatisLogServiceImpl"/>
+        <projectService serviceInterface="com.c2ray.idea.plugin.sqllog.service.MybatisLogService"
+                        serviceImplementation="com.c2ray.idea.plugin.sqllog.service.impl.MybatisLogServiceImpl"/>
 
-		<applicationService serviceImplementation="com.c2ray.idea.plugin.sqllog.service.impl.SqlLogServiceImpl"
-		                    serviceInterface="com.c2ray.idea.plugin.sqllog.service.SqlLogService"/>
-	</extensions>
+        <applicationService serviceImplementation="com.c2ray.idea.plugin.sqllog.service.impl.SqlLogServiceImpl"
+                            serviceInterface="com.c2ray.idea.plugin.sqllog.service.SqlLogService"/>
+    </extensions>
 
-	<!--<extensionPoints>-->
-	<!--</extensionPoints>-->
+    <!--<extensionPoints>-->
+    <!--</extensionPoints>-->
 
-	<actions>
-		<action id="MybatisAttachRecentProcessAction"
-				class="com.c2ray.idea.plugin.sqllog.MybatisAttachRecentProcessAction" text="Run"
-				description="Log last run java process"
-				icon="/icons/mybatis_21.png"
-		/>
-	</actions>
-	<idea-version since-build="204" />
+    <actions>
+        <action id="MybatisAttachRecentProcessAction"
+                class="com.c2ray.idea.plugin.sqllog.MybatisAttachRecentProcessAction" text="Run"
+                description="Log last run java process"
+                icon="/icons/mybatis_21.png"
+        />
+    </actions>
+    <idea-version since-build="204"/>
+    <change-notes>
+        [FIX] 修复debug时idea卡死的问题
+        [FIX] fix the frozen case that enable the plugin when break point is on
+    </change-notes>
 </idea-plugin>
