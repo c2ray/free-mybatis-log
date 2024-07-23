@@ -3,25 +3,24 @@ import org.gradle.internal.impldep.org.eclipse.jgit.lib.ObjectChecker.type
 
 plugins {
     id("java")
-    id("org.jetbrains.intellij") version "1.13.3"
+    id("org.jetbrains.intellij") version "1.16.0"
 }
 
 group = "com.c2ray.idea.plugin"
-version = "1.0.3"
+version = "1.0.4"
 
 repositories {
-    maven {
-        url = uri("https://plugins.gradle.org/m2/")
-    }
+//    maven {
+//        url = uri("https://plugins.gradle.org/m2/")
+//    }
     mavenCentral()
 }
 
 // Configure Gradle IntelliJ Plugin
 // Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
-    version.set("2022.2")
-//    version.set("2022.1.4")
-//    type.set("IC") // Target IDE Platform
+    version = "LATEST-EAP-SNAPSHOT"
+    updateSinceUntilBuild = false
     type.set("IU") // Target IDE Platform
 
     plugins.set(listOf(/* Plugin Dependencies */))
@@ -35,13 +34,12 @@ dependencies {
 tasks {
     // Set the JVM compatibility versions
     withType<JavaCompile> {
-        sourceCompatibility = "11"
-        targetCompatibility = "11"
+        sourceCompatibility = "17"
+        targetCompatibility = "17"
     }
 
     patchPluginXml {
-        sinceBuild.set("221")
-        untilBuild.set("232.*")
+        sinceBuild.set("241")
     }
 
     signPlugin {

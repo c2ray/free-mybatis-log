@@ -53,9 +53,7 @@
                 icon="/icons/mybatis_21.png"
         />
     </actions>
-    <idea-version since-build="204"/>
     <change-notes>
-        [FIX] 修复debug时idea卡死的问题
-        [FIX] fix the frozen case that enable the plugin when break point is on
+        Compatibility for 24.2
     </change-notes>
 </idea-plugin>

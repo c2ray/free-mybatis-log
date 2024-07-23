@@ -44,3 +44,4 @@ bin/
 .run/
 /src/main/resources/libs/
 /.idea
+/test/
